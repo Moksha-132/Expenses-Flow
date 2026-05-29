@@ -47,7 +47,7 @@ const ManagerDashboard = () => {
                 <nav className="navbar flex-between" style={{ background: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
                     <a href="/" className="nav-brand" style={{ color: 'white', textDecoration: 'none' }}>ExpenseFlow (Manager)</a>
                     <div className="flex-center" style={{ gap: '1rem' }}>
-                        <span>Hello, {user?.username}</span>
+                        <span>Hello, {user?.username} {user?.company_name ? `(${user.company_name})` : ''}</span>
                         <button className="btn btn-secondary" onClick={logout} style={{ padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none' }}>
                             <LogOut size={16} /> Logout
                         </button>
