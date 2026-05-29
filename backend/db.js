@@ -16,7 +16,8 @@ const initPg = async () => {
             username TEXT UNIQUE,
             email TEXT,
             password TEXT,
-            role TEXT
+            role TEXT,
+            company_name TEXT
         )`);
 
         await pool.query(`CREATE TABLE IF NOT EXISTS expenses (
@@ -40,14 +41,24 @@ const initPg = async () => {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`);
 
+        const checkColumn = await pool.query(`
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name='users' AND column_name='company_name'
+        `);
+        if (checkColumn.rowCount === 0) {
+            await pool.query(`ALTER TABLE users ADD COLUMN company_name TEXT`);
+            console.log('Added company_name column to users table.');
+        }
+
         const salt = bcrypt.genSaltSync(10);
         const empPassword = bcrypt.hashSync('emp123', salt);
         const mgrPassword = bcrypt.hashSync('mgr123', salt);
         
         const res = await pool.query("SELECT count(*) as count FROM users");
         if (res.rows[0].count == 0) {
-            await pool.query(`INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4)`, ['employee', 'employee@example.com', empPassword, 'employee']);
-            await pool.query(`INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4)`, ['manager', 'manager@example.com', mgrPassword, 'manager']);
+            await pool.query(`INSERT INTO users (username, email, password, role, company_name) VALUES ($1, $2, $3, $4, $5)`, ['employee', 'employee@example.com', empPassword, 'employee', 'Acme Corp']);
+            await pool.query(`INSERT INTO users (username, email, password, role, company_name) VALUES ($1, $2, $3, $4, $5)`, ['manager', 'manager@example.com', mgrPassword, 'manager', 'Acme Corp']);
         }
         console.log('PostgreSQL database initialized successfully.');
     } catch (err) {

@@ -9,6 +9,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('employee');
+    const [companyName, setCompanyName] = useState('');
     const [error, setError] = useState('');
     const { user } = useContext(AuthContext); 
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Register = () => {
             const res = await fetch(`${API_URL}/api/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password, role })
+                body: JSON.stringify({ username, email, password, role, company_name: companyName })
             });
             const data = await res.json();
             if (res.ok) {
@@ -76,6 +77,10 @@ const Register = () => {
                                 <option value="employee">Employee</option>
                                 <option value="manager">Manager</option>
                             </select>
+                        </div>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 500, color: 'white', fontSize: '0.9rem' }}>Company Name</label>
+                            <input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)} required style={{ width: '100%', padding: '0.6rem', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} />
                         </div>
                         <div className="form-group" style={{ marginBottom: 0 }}>
                             <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 500, color: 'white', fontSize: '0.9rem' }}>Password</label>

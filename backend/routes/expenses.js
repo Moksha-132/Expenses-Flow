@@ -29,8 +29,8 @@ router.post('/', authenticateToken, upload.single('receipt'), (req, res) => {
             if (err) return res.status(500).json({ error: err.message });
             const expenseId = this.lastID;
             
-            // Send email to all managers
-            db.all(`SELECT email FROM users WHERE role = 'manager'`, [], (err, managers) => {
+            // Send email to all managers in the same company
+            db.all(`SELECT email FROM users WHERE role = 'manager' AND company_name = ?`, [req.user.company_name], (err, managers) => {
                 if (!err && managers) {
                     managers.forEach(mgr => {
                         if (mgr.email) {
@@ -52,7 +52,7 @@ router.get('/', authenticateToken, (req, res) => {
             res.json(rows);
         });
     } else if (req.user.role === 'manager') {
-        db.all(`SELECT expenses.*, users.username FROM expenses JOIN users ON expenses.user_id = users.id ORDER BY expenses.created_at DESC`, [], (err, rows) => {
+        db.all(`SELECT expenses.*, users.username FROM expenses JOIN users ON expenses.user_id = users.id WHERE users.company_name = ? ORDER BY expenses.created_at DESC`, [req.user.company_name], (err, rows) => {
             if (err) return res.status(500).json({ error: err.message });
             res.json(rows);
         });
