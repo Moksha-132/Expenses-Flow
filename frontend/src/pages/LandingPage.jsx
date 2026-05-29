@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Shield, Zap, Mail, Phone, MapPin } from 'lucide-react';
+import { ArrowRight, CheckCircle, Shield, Zap, Mail, Phone, MapPin, Menu, X } from 'lucide-react';
 
 const LandingPage = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     return (
         <div className="landing-page">
             <header className="navbar flex-between" style={{ background: '#0f172a', color: 'white', borderBottom: 'none' }}>
                 <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     ExpenseFlow
                 </div>
-                <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                    <a href="#about" style={{ color: 'white', fontWeight: 500 }}>About</a>
-                    <a href="#features" style={{ color: 'white', fontWeight: 500 }}>Features</a>
-                    <a href="#how-it-works" style={{ color: 'white', fontWeight: 500 }}>How It Works</a>
-                    <Link to="/contact" style={{ color: 'white', fontWeight: 500 }}>Contact</Link>
-                    <Link to="/login" style={{ color: 'white', fontWeight: 500 }}>Log In</Link>
-                    <Link to="/register" className="btn btn-primary" style={{ padding: '0.5rem 1.5rem', fontSize: '0.9rem' }}>
+                <button 
+                    className="mobile-menu-btn" 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', display: 'none' }}
+                >
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+                <nav className={`desktop-nav ${isMenuOpen ? 'mobile-open' : ''}`} style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                    <a href="#about" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', fontWeight: 500 }}>About</a>
+                    <a href="#features" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', fontWeight: 500 }}>Features</a>
+                    <a href="#how-it-works" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', fontWeight: 500 }}>How It Works</a>
+                    <Link to="/contact" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', fontWeight: 500 }}>Contact</Link>
+                    <Link to="/login" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', fontWeight: 500 }}>Log In</Link>
+                    <Link to="/register" onClick={() => setIsMenuOpen(false)} className="btn btn-primary" style={{ padding: '0.5rem 1.5rem', fontSize: '0.9rem' }}>
                         Get Started
                     </Link>
                 </nav>
