@@ -14,6 +14,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+const { sendMail } = require('../utils/mailer');
+
 router.post('/', authenticateToken, upload.single('receipt'), (req, res) => {
     const { expense_category, amount, date_time, reference_number, notes } = req.body;
     const receipt_url = req.file ? `/uploads/${req.file.filename}` : null;
@@ -25,7 +27,20 @@ router.post('/', authenticateToken, upload.single('receipt'), (req, res) => {
         [req.user.id, expense_category, amount, date_time, reference_number, notes, receipt_url],
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
-            res.json({ id: this.lastID, user_id: req.user.id, expense_category, amount, date_time, reference_number, notes, status: 'Pending', receipt_url });
+            const expenseId = this.lastID;
+            
+            // Send email to all managers
+            db.all(`SELECT email FROM users WHERE role = 'manager'`, [], (err, managers) => {
+                if (!err && managers) {
+                    managers.forEach(mgr => {
+                        if (mgr.email) {
+                            sendMail(mgr.email, `New Expense Submitted by ${req.user.username}`, `A new expense of $${amount} for ${expense_category} has been submitted by ${req.user.username} and is awaiting your approval.`);
+                        }
+                    });
+                }
+            });
+
+            res.json({ id: expenseId, user_id: req.user.id, expense_category, amount, date_time, reference_number, notes, status: 'Pending', receipt_url });
         }
     );
 });
@@ -58,6 +73,14 @@ router.patch('/:id/status', authenticateToken, (req, res) => {
         [status, req.params.id],
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
+            
+            // Notify employee
+            db.get(`SELECT u.email, u.username, e.expense_category, e.amount FROM expenses e JOIN users u ON e.user_id = u.id WHERE e.id = ?`, [req.params.id], (err, row) => {
+                if (!err && row && row.email) {
+                    sendMail(row.email, `Expense Status Updated: ${status}`, `Hello ${row.username},\n\nYour expense of $${row.amount} for ${row.expense_category} has been marked as ${status} by a manager.`);
+                }
+            });
+
             res.json({ success: true, changes: this.changes });
         }
     );

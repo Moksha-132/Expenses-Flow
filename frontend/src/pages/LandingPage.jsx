@@ -21,18 +21,25 @@ const LandingPage = () => {
                 </nav>
             </header>
 
-            <section className="container flex-center" style={{ minHeight: '95vh', textAlign: 'center', flexDirection: 'column' }}>
-                <h1 style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem', color: 'var(--text-main)' }}>
-                    The Ultimate Expense Hub <br />
-                    for modern <span style={{ color: 'var(--accent-yellow)' }}>teams.</span>
-                </h1>
-                <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', maxWidth: '600px', marginBottom: '2.5rem', lineHeight: 1.6 }}>
-                    Connect with your employees, manage reimbursements, and scale your business with ease. Managers approve the best expenses, and you reap the benefits.
-                </p>
-                <div className="flex-center" style={{ gap: '1rem' }}>
-                    <Link to="/register" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
-                        Get Started Now <ArrowRight size={20} />
-                    </Link>
+            <section style={{ position: 'relative', minHeight: '95vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                <video autoPlay loop muted playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}>
+                    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260506_031045_0e1165dd-ab48-46e3-ad3d-5fe77f217647.mp4" type="video/mp4" />
+                </video>
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.9))', zIndex: 1 }}></div>
+                
+                <div className="container flex-center" style={{ position: 'relative', zIndex: 2, textAlign: 'center', flexDirection: 'column' }}>
+                    <h1 style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem', color: 'white' }}>
+                        The Ultimate Expense Hub <br />
+                        for modern <span style={{ color: 'var(--accent-yellow)' }}>teams.</span>
+                    </h1>
+                    <p style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.8)', maxWidth: '600px', marginBottom: '2.5rem', lineHeight: 1.6 }}>
+                        Connect with your employees, manage reimbursements, and scale your business with ease. Managers approve the best expenses, and you reap the benefits.
+                    </p>
+                    <div className="flex-center" style={{ gap: '1rem' }}>
+                        <Link to="/register" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
+                            Get Started Now <ArrowRight size={20} />
+                        </Link>
+                    </div>
                 </div>
             </section>
 
@@ -48,34 +55,25 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            <section id="features" style={{ padding: '5rem 0' }}>
+            <section id="features" style={{ background: '#0f172a', padding: '5rem 0', color: 'white' }}>
                 <div className="container">
                     <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                        <h2 style={{ fontSize: '2.5rem', color: 'var(--accent-blue-dark)' }}>Why Choose ExpenseFlow?</h2>
-                        <p style={{ color: 'var(--text-muted)' }}>Everything you need to manage your business expenses.</p>
+                        <h2 style={{ fontSize: '2.5rem', color: 'white', marginBottom: '1rem' }}>Why Choose ExpenseFlow?</h2>
+                        <p style={{ color: 'rgba(255,255,255,0.7)' }}>Everything you need to manage your business expenses.</p>
                     </div>
                     
                     <div className="grid-cards">
-                        <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
-                            <div style={{ background: 'rgba(37, 99, 235, 0.1)', width: '64px', height: '64px', borderRadius: '50%', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-blue)' }}>
-                                <Zap size={32} />
-                            </div>
-                            <h3 style={{ marginBottom: '1rem' }}>Lightning Fast</h3>
-                            <p style={{ color: 'var(--text-muted)' }}>Submit and approve expenses in seconds, not days. Keep your team moving.</p>
+                        <div className="glass-panel feature-card" style={{ padding: '2.5rem 2rem', textAlign: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <h3 style={{ marginBottom: '1.5rem', color: 'white', fontSize: '1.5rem', background: 'linear-gradient(135deg, #60a5fa, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Lightning Fast</h3>
+                            <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.7 }}>Submit and approve expenses in seconds, not days. Keep your team moving seamlessly without the traditional paperwork bottleneck.</p>
                         </div>
-                        <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
-                            <div style={{ background: 'rgba(234, 179, 8, 0.1)', width: '64px', height: '64px', borderRadius: '50%', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-yellow)' }}>
-                                <Shield size={32} />
-                            </div>
-                            <h3 style={{ marginBottom: '1rem' }}>Secure & Reliable</h3>
-                            <p style={{ color: 'var(--text-muted)' }}>Enterprise-grade security for your financial data and receipts.</p>
+                        <div className="glass-panel feature-card" style={{ padding: '2.5rem 2rem', textAlign: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <h3 style={{ marginBottom: '1.5rem', color: 'white', fontSize: '1.5rem', background: 'linear-gradient(135deg, #facc15, #eab308)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Secure & Reliable</h3>
+                            <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.7 }}>Enterprise-grade security for your financial data and receipts. Your business expenses are encrypted and stored safely in the cloud.</p>
                         </div>
-                        <div className="glass-panel" style={{ padding: '2rem', textAlign: 'center' }}>
-                            <div style={{ background: 'rgba(16, 185, 129, 0.1)', width: '64px', height: '64px', borderRadius: '50%', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-green)' }}>
-                                <CheckCircle size={32} />
-                            </div>
-                            <h3 style={{ marginBottom: '1rem' }}>Easy Tracking</h3>
-                            <p style={{ color: 'var(--text-muted)' }}>Real-time updates on expense statuses from pending to paid.</p>
+                        <div className="glass-panel feature-card" style={{ padding: '2.5rem 2rem', textAlign: 'center', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <h3 style={{ marginBottom: '1.5rem', color: 'white', fontSize: '1.5rem', background: 'linear-gradient(135deg, #34d399, #10b981)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Easy Tracking</h3>
+                            <p style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.7 }}>Get real-time updates on expense statuses from pending to paid. Both managers and employees have full visibility into the timeline.</p>
                         </div>
                     </div>
                 </div>
@@ -150,9 +148,8 @@ const LandingPage = () => {
                 <div className="container" style={{ paddingTop: 0, paddingBottom: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>
                     <div>© 2026 ExpenseFlow. All rights reserved.</div>
                     <div style={{ display: 'flex', gap: '1.5rem' }}>
-                        <a href="#" style={{ color: 'rgba(255,255,255,0.5)' }}>Privacy Policy</a>
-                        <a href="#" style={{ color: 'rgba(255,255,255,0.5)' }}>Terms & Conditions</a>
-                        <a href="#" style={{ color: 'rgba(255,255,255,0.5)' }}>Company Profile</a>
+                        <Link to="/privacy" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Privacy Policy</Link>
+                        <Link to="/terms" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Terms & Conditions</Link>
                     </div>
                 </div>
             </footer>

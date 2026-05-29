@@ -9,6 +9,11 @@ import ManagerDashboard from './pages/ManagerDashboard';
 import Contact from './pages/Contact';
 import Register from './pages/Register';
 
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsConditions from './pages/TermsConditions';
+
 const PrivateRoute = ({ children, role }) => {
     const { user } = useContext(AuthContext);
     
@@ -27,6 +32,10 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsConditions />} />
                 <Route 
                     path="/employee" 
                     element={

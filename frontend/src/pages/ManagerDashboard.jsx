@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import { LogOut, Filter, Check, X, CreditCard, ExternalLink } from 'lucide-react';
+import { requestNotificationPermission, sendDesktopNotification } from '../utils/notifications';
 
 const ManagerDashboard = () => {
     const { user, logout } = useContext(AuthContext);
@@ -19,12 +20,14 @@ const ManagerDashboard = () => {
 
     useEffect(() => {
         fetchExpenses();
+        requestNotificationPermission();
     }, []);
 
     const updateStatus = async (id, status) => {
         try {
             await axios.patch(`http://localhost:5000/api/expenses/${id}/status`, { status });
             fetchExpenses();
+            sendDesktopNotification('Status Updated', { body: `Expense status marked as ${status}` });
         } catch (err) {
             console.error(err);
         }
@@ -33,22 +36,28 @@ const ManagerDashboard = () => {
     const filteredExpenses = filter === 'All' ? expenses : expenses.filter(e => e.status === filter);
 
     return (
-        <div className="animate-fade-in">
-            <nav className="navbar flex-between" style={{ background: '#0f172a', color: 'white', borderBottom: 'none' }}>
-                <a href="/" className="nav-brand" style={{ color: 'white', textDecoration: 'none' }}>ExpenseFlow (Manager)</a>
-                <div className="flex-center" style={{ gap: '1rem' }}>
-                    <span>Hello, {user?.username}</span>
-                    <button className="btn btn-secondary" onClick={logout} style={{ padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none' }}>
-                        <LogOut size={16} /> Logout
-                    </button>
-                </div>
-            </nav>
+        <div className="animate-fade-in" style={{ minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
+            <video autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -2 }}>
+                <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_101827_abebfeec-f243-466b-b494-7f6814c0fbbf.mp4" type="video/mp4" />
+            </video>
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(15, 23, 42, 0.5)', zIndex: -1 }}></div>
+
+            <div style={{ position: 'relative', zIndex: 1 }}>
+                <nav className="navbar flex-between" style={{ background: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
+                    <a href="/" className="nav-brand" style={{ color: 'white', textDecoration: 'none' }}>ExpenseFlow (Manager)</a>
+                    <div className="flex-center" style={{ gap: '1rem' }}>
+                        <span>Hello, {user?.username}</span>
+                        <button className="btn btn-secondary" onClick={logout} style={{ padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none' }}>
+                            <LogOut size={16} /> Logout
+                        </button>
+                    </div>
+                </nav>
 
             <div className="container">
                 <div className="flex-between" style={{ marginBottom: '2rem' }}>
-                    <h2>All Expenses</h2>
+                    <h2 style={{ color: 'white' }}>All Expenses</h2>
                     <div className="flex-center" style={{ gap: '0.5rem' }}>
-                        <Filter size={18} color="var(--text-muted)" />
+                        <Filter size={18} color="white" />
                         <select className="input-field" style={{ width: 'auto', padding: '0.5rem 2rem 0.5rem 1rem' }} value={filter} onChange={e => setFilter(e.target.value)}>
                             <option value="All">All Statuses</option>
                             <option value="Pending">Pending</option>
@@ -129,6 +138,7 @@ const ManagerDashboard = () => {
                         </div>
                     )}
                 </div>
+            </div>
             </div>
         </div>
     );

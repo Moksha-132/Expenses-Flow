@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import { DollarSign, CheckCircle, Clock, CreditCard, Plus, LogOut, Upload } from 'lucide-react';
+import { requestNotificationPermission, sendDesktopNotification } from '../utils/notifications';
 
 const EmployeeDashboard = () => {
     const { user, logout } = useContext(AuthContext);
@@ -27,12 +28,14 @@ const EmployeeDashboard = () => {
 
     useEffect(() => {
         fetchExpenses();
+        requestNotificationPermission();
     }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('expense_category', expenseCategory === 'Other' ? otherCategory : expenseCategory);
+        const category = expenseCategory === 'Other' ? otherCategory : expenseCategory;
+        formData.append('expense_category', category);
         formData.append('amount', amount);
         formData.append('date_time', dateTime);
         formData.append('reference_number', referenceNumber);
@@ -52,6 +55,7 @@ const EmployeeDashboard = () => {
             setNotes('');
             setReceipt(null);
             fetchExpenses();
+            sendDesktopNotification('Expense Submitted', { body: `Successfully submitted $${amount} for ${category}` });
         } catch (err) {
             console.error(err);
         }
@@ -65,20 +69,26 @@ const EmployeeDashboard = () => {
     };
 
     return (
-        <div className="animate-fade-in">
-            <nav className="navbar flex-between" style={{ background: '#0f172a', color: 'white', borderBottom: 'none' }}>
-                <a href="/" className="nav-brand" style={{ color: 'white', textDecoration: 'none' }}>ExpenseFlow</a>
-                <div className="flex-center" style={{ gap: '1rem' }}>
-                    <span>Hello, {user?.username}</span>
-                    <button className="btn btn-secondary" onClick={logout} style={{ padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none' }}>
-                        <LogOut size={16} /> Logout
-                    </button>
-                </div>
-            </nav>
+        <div className="animate-fade-in" style={{ minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
+            <video autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -2 }}>
+                <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_101827_abebfeec-f243-466b-b494-7f6814c0fbbf.mp4" type="video/mp4" />
+            </video>
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(15, 23, 42, 0.5)', zIndex: -1 }}></div>
 
-            <div className="container">
+            <div style={{ position: 'relative', zIndex: 1 }}>
+                <nav className="navbar flex-between" style={{ background: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'blur(10px)', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white' }}>
+                    <a href="/" className="nav-brand" style={{ color: 'white', textDecoration: 'none' }}>ExpenseFlow</a>
+                    <div className="flex-center" style={{ gap: '1rem' }}>
+                        <span>Hello, {user?.username}</span>
+                        <button className="btn btn-secondary" onClick={logout} style={{ padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none' }}>
+                            <LogOut size={16} /> Logout
+                        </button>
+                    </div>
+                </nav>
+
+                <div className="container">
                 <div className="flex-between" style={{ marginBottom: '2rem' }}>
-                    <h2>Employee Dashboard</h2>
+                    <h2 style={{ color: 'white' }}>Employee Dashboard</h2>
                     <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
                         <Plus size={18} /> Add Expense
                     </button>
@@ -235,6 +245,7 @@ const EmployeeDashboard = () => {
                             </table>
                         </div>
                     )}
+                </div>
                 </div>
             </div>
         </div>
