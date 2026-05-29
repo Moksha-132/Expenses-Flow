@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import { API_URL } from '../config';
 import { LogOut, Filter, Check, X, CreditCard, ExternalLink } from 'lucide-react';
 import { requestNotificationPermission, sendDesktopNotification } from '../utils/notifications';
 
@@ -11,7 +12,7 @@ const ManagerDashboard = () => {
 
     const fetchExpenses = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/expenses');
+            const res = await axios.get(`${API_URL}/api/expenses`);
             setExpenses(res.data);
         } catch (err) {
             console.error(err);
@@ -25,7 +26,7 @@ const ManagerDashboard = () => {
 
     const updateStatus = async (id, status) => {
         try {
-            await axios.patch(`http://localhost:5000/api/expenses/${id}/status`, { status });
+            await axios.patch(`${API_URL}/api/expenses/${id}/status`, { status });
             fetchExpenses();
             sendDesktopNotification('Status Updated', { body: `Expense status marked as ${status}` });
         } catch (err) {
@@ -105,7 +106,7 @@ const ManagerDashboard = () => {
                                             </td>
                                             <td>
                                                 {exp.receipt_url ? (
-                                                    <a href={`http://localhost:5000${exp.receipt_url}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                    <a href={`${API_URL}${exp.receipt_url}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                                         <ExternalLink size={14} /> Link
                                                     </a>
                                                 ) : (

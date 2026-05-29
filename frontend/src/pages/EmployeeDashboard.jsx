@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import { API_URL } from '../config';
 import { DollarSign, CheckCircle, Clock, CreditCard, Plus, LogOut, Upload } from 'lucide-react';
 import { requestNotificationPermission, sendDesktopNotification } from '../utils/notifications';
 
@@ -19,7 +20,7 @@ const EmployeeDashboard = () => {
 
     const fetchExpenses = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/expenses');
+            const res = await axios.get(`${API_URL}/api/expenses`);
             setExpenses(res.data);
         } catch (err) {
             console.error(err);
@@ -43,7 +44,7 @@ const EmployeeDashboard = () => {
         if (receipt) formData.append('receipt', receipt);
 
         try {
-            await axios.post('http://localhost:5000/api/expenses', formData, {
+            await axios.post(`${API_URL}/api/expenses`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setShowForm(false);
@@ -232,7 +233,7 @@ const EmployeeDashboard = () => {
                                             </td>
                                             <td>
                                                 {exp.receipt_url ? (
-                                                    <a href={`http://localhost:5000${exp.receipt_url}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                    <a href={`${API_URL}${exp.receipt_url}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                                         <Upload size={14} /> View
                                                     </a>
                                                 ) : (

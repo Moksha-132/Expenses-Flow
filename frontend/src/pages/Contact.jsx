@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { API_URL } from '../config';
 
 const Contact = () => {
     const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const Contact = () => {
         e.preventDefault();
         setStatus('Sending...');
         try {
-            const res = await fetch('http://localhost:5000/api/contact', {
+            const res = await fetch(`${API_URL}/api/contact`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, subject: 'Website Contact', message })

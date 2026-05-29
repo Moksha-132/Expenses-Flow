@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Lock, Hash, ShieldCheck } from 'lucide-react';
+import { API_URL } from '../config';
 
 const ResetPassword = () => {
     const location = useLocation();
@@ -17,7 +18,7 @@ const ResetPassword = () => {
         setError('');
 
         try {
-            const res = await fetch('http://localhost:5000/api/reset-password/confirm', {
+            const res = await fetch(`${API_URL}/api/reset-password/confirm`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, token, newPassword })
