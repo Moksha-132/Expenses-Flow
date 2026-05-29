@@ -101,7 +101,7 @@ const ManagerDashboard = () => {
                                             <td>
                                                 <span className={`badge ${exp.status.toLowerCase()}`}>{exp.status}</span>
                                             </td>
-                                            <td style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={exp.notes}>
+                                            <td style={{ maxWidth: '250px', whiteSpace: 'normal', wordWrap: 'break-word' }}>
                                                 {exp.notes || '-'}
                                             </td>
                                             <td>
