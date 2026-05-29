@@ -21,7 +21,7 @@ const Login = () => {
         e.preventDefault();
         const success = await login(username, password);
         if (!success) {
-            setError('Invalid credentials. Try employee/emp123 or manager/mgr123');
+            setError('Invalid credentials. Please check your username and password.');
         }
     };
 
